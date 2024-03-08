@@ -26,10 +26,6 @@ export default class Headset implements IHeadset {
     public battery_life: number
   ) {}
 
-  create(): IHeadset {
-    return this
-  }
-
   getStats(): stats {
     return {
       id: this.id,
