@@ -2,10 +2,12 @@ import HeadsetFactory from './headset_factory';
 
 const headsetFactory = new HeadsetFactory();
 const lgHeadset = headsetFactory.getHeadset('LG');
-console.log(lgHeadset.getStats());
+console.log(lgHeadset!.getStats());
 
 const samsungHeadset = headsetFactory.getHeadset('Samsung');
-console.log(samsungHeadset.getStats());
+console.log(samsungHeadset!.getStats());
 
 const razerHeadset = headsetFactory.getHeadset('Razer');
-console.log(razerHeadset.getStats());
+console.log(razerHeadset!.getStats());
+
+headsetFactory.getHeadset('Invalid');
