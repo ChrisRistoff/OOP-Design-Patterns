@@ -1,99 +1,76 @@
-type stats = {
-  id: number,
-  brand: string,
-  model: string,
-  price: number,
-  microphone: boolean,
-  noise_cancelling: boolean,
-  wireless: boolean,
-  bluetooth: boolean,
-  battery_life: number
-};
-
-interface HeadsetFactory {
-    getHeadset(type: string): Headset | null;
+// Define abstract product interfaces
+interface AbstractProductA {
+  functionA(): string;
 }
 
-// Concrete Factories
-class LgHeadsetFactory implements HeadsetFactory {
-    getHeadset(type: string): Headset | null {
-        switch (type) {
-            case 'LG':
-                return new LgHeadset();
-            default:
-                return null;
-        }
-    }
+interface AbstractProductB {
+  functionB(): string;
 }
 
-class SamsungHeadsetFactory implements HeadsetFactory {
-    getHeadset(type: string): Headset | null {
-        switch (type) {
-            case 'Samsung':
-                return new SamsungHeadset();
-            default:
-                return null;
-        }
-    }
+// Concrete Products implement abstract products
+class ConcreteProductA1 implements AbstractProductA {
+  functionA(): string {
+    return 'The result of the product A1.';
+  }
 }
 
-interface Headset {
-    getStats(): stats;
+class ConcreteProductA2 implements AbstractProductA {
+  functionA(): string {
+    return 'The result of the product A2.';
+  }
 }
 
-// Concrete Products
-class LgHeadset implements Headset {
-    getStats(){
-        return {
-            id: 1,
-            brand: 'LG',
-            model: 'LG-123',
-            price: 100,
-            microphone: true,
-            noise_cancelling: true,
-            wireless: true,
-            bluetooth: true,
-            battery_life: 10
-        };
-    }
+class ConcreteProductB1 implements AbstractProductB {
+  functionB(): string {
+    return 'The result of the product B1.';
+  }
 }
 
-class SamsungHeadset implements Headset {
-    getStats() {
-        return {
-            id: 2,
-            brand: 'Samsung',
-            model: 'Samsung-123',
-            price: 150,
-            microphone: true,
-            noise_cancelling: true,
-            wireless: true,
-            bluetooth: true,
-            battery_life: 15
-        };
-    }
+class ConcreteProductB2 implements AbstractProductB {
+  functionB(): string {
+    return 'The result of the product B2.';
+  }
 }
 
-// abstract factory
-class HeadsetAbstractFactory {
-    getHeadsetFactory(type: string): HeadsetFactory | null {
-        switch (type) {
-            case 'LG':
-                return new LgHeadsetFactory();
-            case 'Samsung':
-                return new SamsungHeadsetFactory();
-            default:
-                return null;
-        }
-    }
+// Define abstract factory interface
+interface AbstractFactory {
+  createProductA(): AbstractProductA;
+  createProductB(): AbstractProductB;
 }
 
-const headsetAbstractFactory = new HeadsetAbstractFactory();
+// Concrete Factories implement abstract factory and create concrete products
+class ConcreteFactory1 implements AbstractFactory {
+  createProductA(): AbstractProductA {
+    return new ConcreteProductA1();
+  }
 
-const lgFactory = headsetAbstractFactory.getHeadsetFactory('LG');
-const lgHeadset = lgFactory?.getHeadset('LG');
-console.log(lgHeadset!.getStats());
+  createProductB(): AbstractProductB {
+    return new ConcreteProductB1();
+  }
+}
 
-const samsungFactory = headsetAbstractFactory.getHeadsetFactory('Samsung');
-const samsungHeadset = samsungFactory?.getHeadset('Samsung');
-console.log(samsungHeadset!.getStats());
+class ConcreteFactory2 implements AbstractFactory {
+  createProductA(): AbstractProductA {
+    return new ConcreteProductA2();
+  }
+
+  createProductB(): AbstractProductB {
+    return new ConcreteProductB2();
+  }
+}
+
+// Client code works with factories and products only through abstract types
+function clientCode(factory: AbstractFactory) {
+  const productA = factory.createProductA();
+  const productB = factory.createProductB();
+
+  console.log(productA.functionA());
+  console.log(productB.functionB());
+}
+
+// Example usage
+const factory1 = new ConcreteFactory1();
+clientCode(factory1);
+
+const factory2 = new ConcreteFactory2();
+clientCode(factory2);
